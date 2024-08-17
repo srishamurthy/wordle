@@ -1,0 +1,38 @@
+DRAFT: Naive Implementation:
+
+Info:
+legal words
+relative freq of all words
+    -> sigmoid fct:
+        sigmoid(x) = 1 / 1 + e ^ -x -> count
+
+
+Correctness: {Correct/ green - 1, Misplaced/ yellow - 2, Wrong/ gray - 3}
+fct compute correctness: (answer, word) -> pattern = List[Correctness]
+
+
+Guess: {word, pattern}
+# hard code first guess: "tares"
+
+fct match: (word, Guess) -> bool  # Checks if word matches Guess.pattern
+    -> check if compute correctness (word, Guess.word) == Guess.pattern
+
+impl guesser:
+each Guess:
+    Update remaining words:  # pruned after each guess
+        retain word if match(word, last Guess)
+
+    Collection of remaining words
+        Loop (word, count): Compute Goodness*    (SLOW!)
+        Track the best candidate(s)
+
+*impl Goodness:     (SLOW!)
+    Loop patterns:
+        Loop (candidate, count) in remaining words:
+            let g = Guess {word, pattern}
+            check if match(candidate, g): add count
+        compute P(pattern) = in_pattern_count / remaining_count
+
+    The goodness/ entropy of word_i is:  – SUM_pattern P(pattern) * log_2(P(pattern))
+
+fct patterns: () -> Collection of all 3^5 patterns
